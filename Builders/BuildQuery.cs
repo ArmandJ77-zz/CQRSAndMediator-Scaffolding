@@ -3,7 +3,7 @@ using CQRSAndMediator.Scaffolding.Infrastructure;
 using System.Collections.Generic;
 using CQRSAndMediator.Scaffolding.Models;
 
-namespace CQRSTemplates.Builders
+namespace CQRSAndMediator.Scaffolding.Builders
 {
     public static class BuildQuery
     {

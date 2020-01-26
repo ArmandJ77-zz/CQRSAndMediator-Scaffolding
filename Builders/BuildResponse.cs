@@ -1,7 +1,7 @@
 ﻿using CQRSAndMediator.Scaffolding.Enums;
 using CQRSAndMediator.Scaffolding.Infrastructure;
 
-namespace CQRSTemplates.Builders
+namespace CQRSAndMediator.Scaffolding.Builders
 {
     public static class BuildResponse
     {

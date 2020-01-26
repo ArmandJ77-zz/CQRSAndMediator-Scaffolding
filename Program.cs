@@ -1,7 +1,6 @@
 ﻿using CQRSAndMediator.Scaffolding.Builders;
 using CQRSAndMediator.Scaffolding.Enums;
 using CQRSAndMediator.Scaffolding.Infrastructure;
-using CQRSTemplates.Builders;
 using McMaster.Extensions.CommandLineUtils;
 using System;
 
