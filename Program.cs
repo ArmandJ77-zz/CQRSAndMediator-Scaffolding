@@ -46,7 +46,7 @@ namespace CQRSAndMediator.Scaffolding
                     return 0;
                 }
 
-                var operationTypeBuilderResult = OperationTypeResolver.Build(operationType.Value());
+                var operationTypeBuilderResult = OperationTypeResolver.Resolve(operationType.Value());
 
                 if (operationTypeBuilderResult == OperationType.UNSUPPORTED)
                 {
