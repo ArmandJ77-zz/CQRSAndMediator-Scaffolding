@@ -5,9 +5,8 @@ namespace CQRSAndMediator.Scaffolding.Resolver
 {
     public static class PatternFileNameResolver
     {
-        public static PatternFileType Resolve(PatternDirectoryType dirType)
-        {
-            return dirType switch
+        public static PatternFileType Resolve(PatternDirectoryType dirType) =>
+            dirType switch
             {
                 PatternDirectoryType.Commands => PatternFileType.Command,
                 PatternDirectoryType.Handlers => PatternFileType.Handler,
@@ -15,6 +14,5 @@ namespace CQRSAndMediator.Scaffolding.Resolver
                 PatternDirectoryType.Responses => PatternFileType.Response,
                 _ => throw new NotSupportedException()
             };
-        }
     }
 }

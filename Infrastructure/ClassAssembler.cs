@@ -14,15 +14,13 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
         private CompilationUnitSyntax _syntaxFactory;
         private NamespaceDeclarationSyntax _namespace;
         private ClassDeclarationSyntax _class;
-
-        public ClassAssembler(DomainSettingsModel settings)
+        public ClassAssembler(string concern, string operation, PatternDirectoryType patternType)
         {
-            _settings = settings;
+            _settings = new DomainSettingsModel(concern, operation, patternType);
             _syntaxFactory = SyntaxFactory.CompilationUnit();
         }
-
         public static IOnConfiguration Configure(string concern, string operation, PatternDirectoryType patternType)
-            => new ClassAssembler(BuildDomainSettingsModel.Build(concern, operation, patternType));
+            => new ClassAssembler(concern, operation, patternType);
 
         public IWithNamespace ImportNamespaces(List<NamespaceModel> namespaceModels = null)
         {
@@ -35,7 +33,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             return this;
         }
-
         public IWithNamespace CreateNamespace()
         {
             var name = $"{_settings.DomainName}.{_settings.PatternType.ToString()}.{_settings.Concern}";
@@ -46,7 +43,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             return this;
         }
-
         public IWithInheritance CreateClass()
         {
             Log.Info($"class Name: ${_settings.ClassName}");
@@ -55,7 +51,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             return this;
         }
-
         public IWithInheritance WithInheritance(List<string> inheritanceList)
         {
             if (inheritanceList == null)
@@ -69,7 +64,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             return this;
         }
-
         public IWithInheritance ImplementMediatorHandlerInheritance(string responseTypeName, string requestTypeName)
         {
             var handleSyntax = SyntaxFactory.ParseStatement("throw new System.NotImplementedException();");
@@ -88,7 +82,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             return this;
         }
-
         public void Generate()
         {
             _namespace = _namespace.AddMembers(_class);
@@ -124,7 +117,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             CleanUp();
         }
-
         private void CleanUp()
         {
             _class = null;

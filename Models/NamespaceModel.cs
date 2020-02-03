@@ -10,7 +10,6 @@
             Name = name;
             PrependWithDomainName = prependWithDomainName;
         }
-
         public void AddDomainNamespace(string domain) => Name = $"{domain}.{Name}";
     }
 }
