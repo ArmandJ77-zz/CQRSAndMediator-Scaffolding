@@ -15,6 +15,7 @@ namespace CQRSAndMediator.Scaffolding.Models
             var solutionFile = Directory.GetFiles(@"C:\Sources\MyGithub\CQRSAndMediator-Microservice", "*.sln").FirstOrDefault();
 
             var solutionInfo = SolutionFile.Parse(solutionFile);
+
             var projectList = solutionInfo.ProjectsInOrder;
 
             foreach (var proj in projectList)
@@ -38,7 +39,6 @@ namespace CQRSAndMediator.Scaffolding.Models
             Log.Info($"ProjectName: {result.ProjectName}");
             Log.Info($"DomainName: {result.DomainName}");
             Log.Info(result.DomainAbsolutePath);
-
 
             return result;
         }

@@ -10,6 +10,5 @@ namespace CQRSAndMediator.Scaffolding.Enums
         QUERY,
         [Description("UNSUPPORTED")]
         UNSUPPORTED
-
     }
 }

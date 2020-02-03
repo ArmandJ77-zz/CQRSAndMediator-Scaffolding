@@ -1,8 +1,8 @@
 ﻿using CQRSAndMediator.Scaffolding.Enums;
 
-namespace CQRSAndMediator.Scaffolding.Builders
+namespace CQRSAndMediator.Scaffolding.Resolver
 {
-    public static class BuildOperationType
+    public static class OperationTypeResolver
     {
         public static OperationType Build(string operationType)
         {

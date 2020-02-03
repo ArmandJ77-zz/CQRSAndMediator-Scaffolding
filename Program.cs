@@ -3,6 +3,7 @@ using CQRSAndMediator.Scaffolding.Enums;
 using CQRSAndMediator.Scaffolding.Infrastructure;
 using McMaster.Extensions.CommandLineUtils;
 using System;
+using CQRSAndMediator.Scaffolding.Resolver;
 
 namespace CQRSAndMediator.Scaffolding
 {
@@ -45,7 +46,7 @@ namespace CQRSAndMediator.Scaffolding
                     return 0;
                 }
 
-                var operationTypeBuilderResult = BuildOperationType.Build(operationType.Value());
+                var operationTypeBuilderResult = OperationTypeResolver.Build(operationType.Value());
 
                 if (operationTypeBuilderResult == OperationType.UNSUPPORTED)
                 {

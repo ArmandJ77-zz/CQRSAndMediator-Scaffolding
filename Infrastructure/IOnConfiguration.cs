@@ -6,6 +6,5 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
     public interface IOnConfiguration
     {
         IWithNamespace ImportNamespaces(List<NamespaceModel> namespaceModels = null);
-
     }
 }

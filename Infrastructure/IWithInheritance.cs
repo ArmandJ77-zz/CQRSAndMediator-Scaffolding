@@ -6,7 +6,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
     {
         IWithInheritance WithInheritance(List<string> inheritanceLis);
         IWithInheritance ImplementMediatorHandlerInheritance(string responseTypeName, string requestTypeName);
-     
         void Generate();
     }
 }
