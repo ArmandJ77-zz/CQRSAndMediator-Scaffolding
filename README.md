@@ -107,3 +107,17 @@ The Patch Command
 ```
 scaffold -c Invoices -o Patch -ot command
 ```
+
+## Develop locally
+Update the nuget package version located in CQRSAndMediator.Scaffolding.csproj
+
+```
+dotnet build .
+dotnet pack
+```
+
+then in the solution directory:
+```
+dotnet tool update -g cqrsandmediator.scaffolding --add-source ./nupkg --version x.x.x
+```
+
