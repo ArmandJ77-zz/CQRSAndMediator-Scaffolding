@@ -46,9 +46,9 @@ namespace CQRSAndMediator.Scaffolding.Models
                 GroupingStrategy = groupBy;
             }
 
-            Log.Info($"ProjectName: {ProjectName}");
-            Log.Info($"DomainName: {DomainName}");
-            Log.Info($"DomainAbsolutePath: {DomainAbsolutePath}");
+            LogUtility.Info($"ProjectName: {ProjectName}");
+            LogUtility.Info($"DomainName: {DomainName}");
+            LogUtility.Info($"DomainAbsolutePath: {DomainAbsolutePath}");
         }
 
         private static string ResolveDomainAbsolutePath(string absolutePath)

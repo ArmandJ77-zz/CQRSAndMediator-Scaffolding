@@ -42,19 +42,19 @@ namespace CQRSAndMediator.Scaffolding
             {
                 if (!operationType.HasValue())
                 {
-                    Log.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
+                    LogUtility.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
                     return 0;
                 }
 
                 if (!concern.HasValue())
                 {
-                    Log.Error("Invalid concern parameter: concern must be specified");
+                    LogUtility.Error("Invalid concern parameter: concern must be specified");
                     return 0;
                 }
 
                 if (!operation.HasValue())
                 {
-                    Log.Error("Invalid operation parameter: operation must be specified");
+                    LogUtility.Error("Invalid operation parameter: operation must be specified");
                     return 0;
                 }
 
@@ -72,7 +72,7 @@ namespace CQRSAndMediator.Scaffolding
 
                 if (operationTypeBuilderResult == OperationType.UNSUPPORTED)
                 {
-                    Log.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
+                    LogUtility.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
                     return 0;
                 }
 
@@ -87,10 +87,10 @@ namespace CQRSAndMediator.Scaffolding
                         BuildQuery.Build(concern.Value(), operation.Value(), groupByType);
                         break;
                     case OperationType.UNSUPPORTED:
-                        Log.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
+                        LogUtility.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
                         break;
                     default:
-                        Log.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
+                        LogUtility.Error("Invalid operation type parameter: must specify [c] for command or [q] for query");
                         break;
                 };
 

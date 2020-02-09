@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Generic;
-using System.IO;
+using CQRSAndMediator.Scaffolding.Utilities;
 
 namespace CQRSAndMediator.Scaffolding.Infrastructure
 {
@@ -50,7 +50,7 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
         }
         public IWithInheritance CreateClass()
         {
-            Log.Info($"class Name: ${_settings.ClassName}");
+            LogUtility.Info($"class Name: ${_settings.ClassName}");
             _class = SyntaxFactory.ClassDeclaration(_settings.ClassName);
             _class = _class.AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword));
 
@@ -99,20 +99,20 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             var patternAbsolutePath = _settings.GroupingStrategy switch
             {
-                GroupByType.Concern => CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.Concern, _settings.PatternType.ToString() }),
-                GroupByType.Operation => CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.PatternType.ToString() })
+                GroupByType.Concern => FileSystemUtility.CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.Concern, _settings.PatternType.ToString() }),
+                GroupByType.Operation => FileSystemUtility.CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.PatternType.ToString() })
             };
-            Log.Info($"patternAbsolutePath: ${patternAbsolutePath}");
+            LogUtility.Info($"patternAbsolutePath: ${patternAbsolutePath}");
 
             var concernAbsolutePath = _settings.GroupingStrategy switch
             {
-                GroupByType.Concern => CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.Concern, _settings.PatternType.ToString() }),
-                GroupByType.Operation => CreateDirectory(new[] { patternAbsolutePath, _settings.Concern })
+                GroupByType.Concern => FileSystemUtility.CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.Concern, _settings.PatternType.ToString() }),
+                GroupByType.Operation => FileSystemUtility.CreateDirectory(new[] { patternAbsolutePath, _settings.Concern })
             };
-            Log.Info($"concernAbsolutePath: ${concernAbsolutePath}");
+            LogUtility.Info($"concernAbsolutePath: ${concernAbsolutePath}");
 
-            var absoluteFilePath = CreateFile(new[] { concernAbsolutePath, _settings.ClassName }, data);
-            Log.Info($"absoluteFilePath: ${absoluteFilePath}");
+            var absoluteFilePath = FileSystemUtility.CreateFile(new[] { concernAbsolutePath, _settings.ClassName }, data);
+            LogUtility.Info($"absoluteFilePath: ${absoluteFilePath}");
 
             CleanUp();
         }
@@ -121,33 +121,6 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
             _class = null;
             _namespace = null;
             _syntaxFactory = null;
-        }
-
-        private static string CreateDirectory(string[] pathList)
-        {
-            var path = Path.Combine(pathList);
-
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-
-            return path;
-        }
-
-        private static string CreateFile(string[] pathList, string data)
-        {
-            var path = Path.Combine(pathList);
-
-            if (!File.Exists(path))
-            {
-                using var streamWriter = new StreamWriter($"{path}.cs");
-                streamWriter.Write(data);
-            }
-            else
-            {
-                Log.Error($"File already exists! {path}");
-            }
-
-            return path;
         }
     }
 }

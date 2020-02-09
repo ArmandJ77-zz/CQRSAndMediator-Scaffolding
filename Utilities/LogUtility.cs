@@ -2,7 +2,7 @@
 
 namespace CQRSAndMediator.Scaffolding.Infrastructure
 {
-    public static class Log
+    public static class LogUtility
     {
         public static void Error(string message)
         {
