@@ -5,16 +5,22 @@ using CQRSAndMediator.Scaffolding.Models;
 
 namespace CQRSAndMediator.Scaffolding.Builders
 {
-    public static class BuildCommand 
+    public static class BuildCommand
     {
-        public static void Build(string concern, string operation)
+        public static void Build(string concern, string operation, GroupByType groupBy)
         {
+            var responseNameSpace = groupBy switch
+            {
+                GroupByType.Concern => $"{concern}.Responses",
+                GroupByType.Operation => $"Responses.{concern}"
+            };
+
             ClassAssembler
-                .Configure(concern,operation, PatternDirectoryType.Commands)
+                .Configure(concern, operation, PatternDirectoryType.Commands, groupBy)
                 .ImportNamespaces(new List<NamespaceModel>
                 {
                     new NamespaceModel("MediatR"),
-                    new NamespaceModel($"Responses.{concern}",true)
+                    new NamespaceModel(responseNameSpace,true)
                 })
                 .CreateNamespace()
                 .CreateClass()

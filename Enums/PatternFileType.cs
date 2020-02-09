@@ -14,3 +14,4 @@ namespace CQRSAndMediator.Scaffolding.Enums
         Handler
     }
 }
+ 

@@ -7,10 +7,10 @@ namespace CQRSAndMediator.Scaffolding.Builders
 {
     public static class BuildQuery
     {
-        public static void Build(string concern, string operation)
+        public static void Build(string concern, string operation, GroupByType groupBy)
         {
             ClassAssembler
-                .Configure(concern,operation, PatternDirectoryType.Queries)
+                .Configure(concern,operation, PatternDirectoryType.Queries, groupBy)
                 .ImportNamespaces(new List<NamespaceModel>
                 {
                     new NamespaceModel("MediatR"),

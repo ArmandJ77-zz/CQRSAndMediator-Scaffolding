@@ -14,20 +14,21 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
         private CompilationUnitSyntax _syntaxFactory;
         private NamespaceDeclarationSyntax _namespace;
         private ClassDeclarationSyntax _class;
-        public ClassAssembler(string concern, string operation, PatternDirectoryType patternType)
+        public ClassAssembler(string concern, string operation, PatternDirectoryType patternType, GroupByType groupBy)
         {
-            _settings = new DomainSettingsModel(concern, operation, patternType);
+            _settings = new DomainSettingsModel(concern, operation, patternType, groupBy);
             _syntaxFactory = SyntaxFactory.CompilationUnit();
         }
-        public static IOnConfiguration Configure(string concern, string operation, PatternDirectoryType patternType)
-            => new ClassAssembler(concern, operation, patternType);
+        public static IOnConfiguration Configure(string concern, string operation, PatternDirectoryType patternType, GroupByType groupBy)
+            => new ClassAssembler(concern, operation, patternType, groupBy);
 
         public IWithNamespace ImportNamespaces(List<NamespaceModel> namespaceModels = null)
         {
             namespaceModels?.ForEach(model =>
             {
                 if (model.PrependWithDomainName)
-                    model.AddDomainNamespace(_settings.DomainName);
+                    model.Name = $"{_settings.DomainName}.{model.Name}";
+
                 _syntaxFactory = _syntaxFactory.AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(model.Name)));
             });
 
@@ -35,7 +36,11 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
         }
         public IWithNamespace CreateNamespace()
         {
-            var name = $"{_settings.DomainName}.{_settings.PatternType.ToString()}.{_settings.Concern}";
+            var name = _settings.GroupingStrategy switch
+            {
+                GroupByType.Concern => $"{_settings.DomainName}.{_settings.Concern}.{_settings.PatternType.ToString()}",
+                GroupByType.Operation => $"{_settings.DomainName}.{_settings.PatternType.ToString()}.{_settings.Concern}"
+            };
 
             _namespace = SyntaxFactory.NamespaceDeclaration(
                 SyntaxFactory.ParseName(name))
@@ -88,32 +93,26 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             _syntaxFactory = _syntaxFactory.AddMembers(_namespace);
 
-            var code = _syntaxFactory
+            var data = _syntaxFactory
                 .NormalizeWhitespace()
                 .ToFullString();
 
-            var patternAbsolutePath = Path.Combine(_settings.DomainAbsolutePath, _settings.PatternType.ToString());
-            if (!Directory.Exists(patternAbsolutePath))
-                Directory.CreateDirectory(patternAbsolutePath);
+            var patternAbsolutePath = _settings.GroupingStrategy switch
+            {
+                GroupByType.Concern => CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.Concern, _settings.PatternType.ToString() }),
+                GroupByType.Operation => CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.PatternType.ToString() })
+            };
             Log.Info($"patternAbsolutePath: ${patternAbsolutePath}");
 
-            var concernAbsolutePath = Path.Combine(patternAbsolutePath, _settings.Concern);
-            if (!Directory.Exists(concernAbsolutePath))
-                Directory.CreateDirectory(concernAbsolutePath);
+            var concernAbsolutePath = _settings.GroupingStrategy switch
+            {
+                GroupByType.Concern => CreateDirectory(new[] { _settings.DomainAbsolutePath, _settings.Concern, _settings.PatternType.ToString() }),
+                GroupByType.Operation => CreateDirectory(new[] { patternAbsolutePath, _settings.Concern })
+            };
             Log.Info($"concernAbsolutePath: ${concernAbsolutePath}");
 
-            var absoluteFilePath = Path.Combine(concernAbsolutePath, _settings.ClassName);
-            Log.Info($"absoluteFilePath: ${concernAbsolutePath}");
-
-            if (!File.Exists(absoluteFilePath))
-            {
-                using var streamWriter = new StreamWriter($"{absoluteFilePath}.cs");
-                streamWriter.Write(code);
-            }
-            else
-            {
-                Log.Error($"File already exists! {absoluteFilePath}");
-            }
+            var absoluteFilePath = CreateFile(new[] { concernAbsolutePath, _settings.ClassName }, data);
+            Log.Info($"absoluteFilePath: ${absoluteFilePath}");
 
             CleanUp();
         }
@@ -122,6 +121,33 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
             _class = null;
             _namespace = null;
             _syntaxFactory = null;
+        }
+
+        private static string CreateDirectory(string[] pathList)
+        {
+            var path = Path.Combine(pathList);
+
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            return path;
+        }
+
+        private static string CreateFile(string[] pathList, string data)
+        {
+            var path = Path.Combine(pathList);
+
+            if (!File.Exists(path))
+            {
+                using var streamWriter = new StreamWriter($"{path}.cs");
+                streamWriter.Write(data);
+            }
+            else
+            {
+                Log.Error($"File already exists! {path}");
+            }
+
+            return path;
         }
     }
 }

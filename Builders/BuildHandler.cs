@@ -7,26 +7,26 @@ namespace CQRSAndMediator.Scaffolding.Builders
 {
     public static class BuildHandler
     {
-        public static void Build(string concern, string operation, OperationType ot)
+        public static void Build(string concern, string operation, OperationType ot,  GroupByType groupBy)
         {
-            var tIn = ot switch
+            var tInObjectName = ot switch
             {
                 OperationType.COMMAND => $"{concern}{operation}Command",
                 OperationType.QUERY => $"{concern}{operation}Query"
             };
 
-            var tInNamespace = ot switch
+            var operationTypeNamespace = ot switch
             {
-                OperationType.COMMAND => $"Commands.{concern}",
-                OperationType.QUERY => $"Queries.{concern}"
+                OperationType.COMMAND => ResolveNamespace(concern,"Commands",groupBy),
+                OperationType.QUERY => ResolveNamespace(concern,"Queries",groupBy)
             };
             
             ClassAssembler
-                .Configure(concern, operation, PatternDirectoryType.Handlers)
+                .Configure(concern, operation, PatternDirectoryType.Handlers, groupBy)
                 .ImportNamespaces(new List<NamespaceModel>
                 {
                     new NamespaceModel("MediatR"),
-                    new NamespaceModel(tInNamespace,true),
+                    new NamespaceModel(operationTypeNamespace,true),
                     new NamespaceModel($"Responses.{concern}",true),
                     new NamespaceModel("System.Collections.Generic"),
                     new NamespaceModel("System.Threading"),
@@ -36,11 +36,18 @@ namespace CQRSAndMediator.Scaffolding.Builders
                 .CreateClass()
                 .WithInheritance(new List<string>
                 {
-                    $"IRequestHandler<{tIn},{concern}{operation}Response>"
+                    $"IRequestHandler<{tInObjectName},{concern}{operation}Response>"
                 })
-                .ImplementMediatorHandlerInheritance($"{concern}{operation}Response",tIn)
+                .ImplementMediatorHandlerInheritance($"{concern}{operation}Response",tInObjectName)
                 .Generate()
                 ;
         }
+
+        private static string ResolveNamespace(string concern, string operationType, GroupByType groupByType)
+            =>  groupByType switch
+                    {
+                        GroupByType.Concern => $"{concern}.{operationType}",
+                        GroupByType.Operation => $"{operationType}.{concern}" 
+                    };
     }
 }

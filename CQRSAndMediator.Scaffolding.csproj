@@ -7,7 +7,7 @@
     <ToolCommandName>scaffold</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
     <IsPackable>true</IsPackable>
-    <Version>1.0.1</Version>
+    <Version>1.0.14</Version>
     <LangVersion>8</LangVersion>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <Authors>Armand Jordaan</Authors>
@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt"/>
+    <None Include="LICENSE.txt" Pack="true" PackagePath="LICENSE.txt" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.5.0" />
     <PackageReference Include="Microsoft.Build" Version="16.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Compilers" Version="3.4.0" />

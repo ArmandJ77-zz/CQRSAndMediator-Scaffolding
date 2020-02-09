@@ -5,10 +5,10 @@ namespace CQRSAndMediator.Scaffolding.Builders
 {
     public static class BuildResponse
     {
-        public static void Build(string concern, string operation)
+        public static void Build(string concern, string operation, GroupByType groupBy)
         {
             ClassAssembler
-                .Configure(concern,operation,PatternDirectoryType.Responses)
+                .Configure(concern, operation, PatternDirectoryType.Responses, groupBy)
                 .ImportNamespaces()
                 .CreateNamespace()
                 .CreateClass()

@@ -18,7 +18,9 @@ namespace CQRSAndMediator.Scaffolding.Models
         public string ProjectName { get; }
         public string DomainName { get; }
         public string DomainAbsolutePath { get; }
-        public DomainSettingsModel(string concern, string operation, PatternDirectoryType patternType)
+        public GroupByType GroupingStrategy { get; set; }
+
+        public DomainSettingsModel(string concern, string operation, PatternDirectoryType patternType, GroupByType groupBy)
         {
             var solutionFile = Directory.GetFiles(@"C:\Sources\MyGithub\CQRSAndMediator-Microservice", "*.sln").FirstOrDefault();
 
@@ -41,12 +43,14 @@ namespace CQRSAndMediator.Scaffolding.Models
                 DomainAbsolutePath = ResolveDomainAbsolutePath(proj.AbsolutePath);
                 PatternFileType = PatternFileNameResolver.Resolve(patternType);
                 ClassName = $"{concern}{operation}{PatternFileNameResolver.Resolve(patternType)}";
+                GroupingStrategy = groupBy;
             }
 
             Log.Info($"ProjectName: {ProjectName}");
             Log.Info($"DomainName: {DomainName}");
-            Log.Info(DomainAbsolutePath);
+            Log.Info($"DomainAbsolutePath: {DomainAbsolutePath}");
         }
+
         private static string ResolveDomainAbsolutePath(string absolutePath)
         {
             var lastIndexOf = absolutePath.LastIndexOf("\\", StringComparison.Ordinal);
