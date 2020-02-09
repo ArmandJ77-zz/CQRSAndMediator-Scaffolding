@@ -68,8 +68,7 @@ i.e group by operation when parameters are -c Orders -o GetById -ot query -g O
         | OrdersGetByIdResponse.cs
     | Queries
         | OrderGetByIdQuery.cs
----
-
+```
 
 ## Installation
 
@@ -77,11 +76,36 @@ Install using dotnet cli:
 
 ```
 
-dotnet tool install --global CQRSAndMediator.Scaffolding --version 1.0.14
+dotnet tool install --global CQRSAndMediator.Scaffolding
 
+```
+
+To uninstall use:
+
+```
+dotnet tool uninstall cqrsandmediator.scaffolding --global
 ```
 
 ## Usage
 
-To scaffold the CQRS object in a domain using the
+**Note:** The tool requires that the project is setup already and that the actions are executed in the top level directory of where your domain layer directory is located.
+
+Use case scaffold out the CRUD domain for an invoice:
+
+The Create Command
+
+```
+scaffold -c Invoices -o Create -ot command
+```
+
+The Get By id query
+
+```
+scaffold -c Invoices -o GetById -ot query
+```
+
+The Patch Command
+
+```
+scaffold -c Invoices -o Patch -ot command
 ```
