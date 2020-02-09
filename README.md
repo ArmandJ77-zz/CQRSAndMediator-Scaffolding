@@ -75,9 +75,7 @@ i.e group by operation when parameters are -c Orders -o GetById -ot query -g O
 Install using dotnet cli:
 
 ```
-
 dotnet tool install --global CQRSAndMediator.Scaffolding
-
 ```
 
 To uninstall use:
