@@ -2,6 +2,7 @@
 using CQRSAndMediator.Scaffolding.Infrastructure;
 using CQRSAndMediator.Scaffolding.Models;
 using System.Collections.Generic;
+using CQRSAndMediator.Scaffolding.Resolver;
 
 namespace CQRSAndMediator.Scaffolding.Builders
 {
@@ -17,8 +18,8 @@ namespace CQRSAndMediator.Scaffolding.Builders
 
             var operationTypeNamespace = ot switch
             {
-                OperationType.COMMAND => ResolveNamespace(concern,"Commands",groupBy),
-                OperationType.QUERY => ResolveNamespace(concern,"Queries",groupBy)
+                OperationType.COMMAND => NamespaceResolver.Resolve(concern,"Commands",groupBy),
+                OperationType.QUERY =>  NamespaceResolver.Resolve(concern,"Queries",groupBy)
             };
             
             ClassAssembler
@@ -27,7 +28,7 @@ namespace CQRSAndMediator.Scaffolding.Builders
                 {
                     new NamespaceModel("MediatR"),
                     new NamespaceModel(operationTypeNamespace,true),
-                    new NamespaceModel($"Responses.{concern}",true),
+                    new NamespaceModel($"{NamespaceResolver.Resolve(concern,"Responses",groupBy)}",true),
                     new NamespaceModel("System.Collections.Generic"),
                     new NamespaceModel("System.Threading"),
                     new NamespaceModel("System.Threading.Tasks")
@@ -43,11 +44,6 @@ namespace CQRSAndMediator.Scaffolding.Builders
                 ;
         }
 
-        private static string ResolveNamespace(string concern, string operationType, GroupByType groupByType)
-            =>  groupByType switch
-                    {
-                        GroupByType.Concern => $"{concern}.{operationType}",
-                        GroupByType.Operation => $"{operationType}.{concern}" 
-                    };
+  
     }
 }

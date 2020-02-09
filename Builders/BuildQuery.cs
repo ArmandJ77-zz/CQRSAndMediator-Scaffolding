@@ -1,7 +1,8 @@
 ﻿using CQRSAndMediator.Scaffolding.Enums;
 using CQRSAndMediator.Scaffolding.Infrastructure;
-using System.Collections.Generic;
 using CQRSAndMediator.Scaffolding.Models;
+using CQRSAndMediator.Scaffolding.Resolver;
+using System.Collections.Generic;
 
 namespace CQRSAndMediator.Scaffolding.Builders
 {
@@ -14,7 +15,7 @@ namespace CQRSAndMediator.Scaffolding.Builders
                 .ImportNamespaces(new List<NamespaceModel>
                 {
                     new NamespaceModel("MediatR"),
-                    new NamespaceModel($"Responses.{concern}",true)
+                    new NamespaceModel($"{NamespaceResolver.Resolve(concern,"Responses",groupBy)}",true),
                 })
                 .CreateNamespace()
                 .CreateClass()
