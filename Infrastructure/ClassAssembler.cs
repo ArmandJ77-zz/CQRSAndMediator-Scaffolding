@@ -34,6 +34,7 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
 
             return this;
         }
+
         public IWithNamespace CreateNamespace()
         {
             var name = _settings.GroupingStrategy switch
