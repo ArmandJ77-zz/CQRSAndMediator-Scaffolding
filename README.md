@@ -25,7 +25,7 @@ scaffold -h
 **Operation:** Name of the action you are taking in your concern i.e GetById, GetPagedResult for queries or Create, Patch, Update for commands.
 
 ```
--c|--concern <NAME>
+-o|--operation <OPERATION>
 ```
 
 **OperationType:** The type of CQRS operation you are scaffolding i.e command or query
