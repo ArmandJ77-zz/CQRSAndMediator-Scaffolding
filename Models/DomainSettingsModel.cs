@@ -22,7 +22,7 @@ namespace CQRSAndMediator.Scaffolding.Models
 
         public DomainSettingsModel(string concern, string operation, PatternDirectoryType patternType, GroupByType groupBy)
         {
-            var solutionFile = Directory.GetFiles(@"C:\Sources\MyGithub\CQRSAndMediator-Microservice", "*.sln").FirstOrDefault();
+            var solutionFile = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.sln").FirstOrDefault();
 
             var solutionInfo = SolutionFile.Parse(solutionFile);
 
