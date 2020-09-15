@@ -3,6 +3,7 @@ using CQRSAndMediator.Scaffolding.Infrastructure;
 using CQRSAndMediator.Scaffolding.Models;
 using System.Collections.Generic;
 using CQRSAndMediator.Scaffolding.Resolver;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace CQRSAndMediator.Scaffolding.Builders
 {
@@ -23,7 +24,7 @@ namespace CQRSAndMediator.Scaffolding.Builders
             };
             
             ClassAssembler
-                .Configure(concern, operation, PatternDirectoryType.Handlers, groupBy)
+                .ConfigureHandler(concern, operation, PatternDirectoryType.Handlers, groupBy)
                 .ImportNamespaces(new List<NamespaceModel>
                 {
                     new NamespaceModel("MediatR"),
@@ -34,13 +35,13 @@ namespace CQRSAndMediator.Scaffolding.Builders
                     new NamespaceModel("System.Threading.Tasks")
                 })
                 .CreateNamespace()
-                .CreateClass()
+                .CreateClass(new[] { SyntaxFactory.Token(SyntaxKind.PublicKeyword) })
                 .WithInheritance(new List<string>
                 {
                     $"IRequestHandler<{tInObjectName},{concern}{operation}Response>"
                 })
                 .ImplementMediatorHandlerInheritance($"{concern}{operation}Response",tInObjectName)
-                .Generate()
+                .GenerateHandler()
                 ;
         }
 

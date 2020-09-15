@@ -14,6 +14,19 @@ Show help information:
 scaffold -h
 ```
 
+Create a new solution
+
+```
+scaffold new sln <NAME>
+```
+
+Create new Mediator handlers
+
+```
+scaffold new domain -c <CONCERN> -o <OPERATION> -ot <OPERATION TYPE>
+```
+
+
 #### Command Parameters:
 
 **Concern:** Name of the domain area you are working in i.e Orders, People, Invoice ect.
@@ -93,19 +106,19 @@ Use case scaffold out the CRUD domain for an invoice:
 The Create Command
 
 ```
-scaffold -c Invoices -o Create -ot command
+scaffold new domain -c Invoices -o Create -ot command
 ```
 
 The Get By id query
 
 ```
-scaffold -c Invoices -o GetById -ot query
+scaffold new domain -c Invoices -o GetById -ot query
 ```
 
 The Patch Command
 
 ```
-scaffold -c Invoices -o Patch -ot command
+scaffold new domain -c Invoices -o Patch -ot command
 ```
 
 ## Develop locally

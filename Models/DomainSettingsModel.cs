@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using CQRSAndMediator.Scaffolding.Enums;
-using CQRSAndMediator.Scaffolding.Infrastructure;
+﻿using CQRSAndMediator.Scaffolding.Enums;
 using CQRSAndMediator.Scaffolding.Resolver;
 using Microsoft.Build.Construction;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace CQRSAndMediator.Scaffolding.Models
 {
@@ -23,32 +22,31 @@ namespace CQRSAndMediator.Scaffolding.Models
         public DomainSettingsModel(string concern, string operation, PatternDirectoryType patternType, GroupByType groupBy)
         {
             var solutionFile = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.sln").FirstOrDefault();
-
             var solutionInfo = SolutionFile.Parse(solutionFile);
 
             var projectList = solutionInfo.ProjectsInOrder;
 
-            foreach (var proj in projectList)
-            {
-                if (!proj.ProjectName.Contains(".Logic")
-                    && !proj.ProjectName.Contains(".Domain"))
-                    continue;
+            var proj =
+                projectList.FirstOrDefault(x => x.ProjectName.Equals("Logic") || x.ProjectName.Equals("Domain"));
 
-                Concern = concern;
-                Operation = operation;
-                PatternType = patternType;
+            if (proj == null)
+                throw new Exception("Missing domain or logic project in solution");
 
-                ProjectName = proj.RelativePath;
-                DomainName = proj.ProjectName;
-                DomainAbsolutePath = ResolveDomainAbsolutePath(proj.AbsolutePath);
-                PatternFileType = PatternFileNameResolver.Resolve(patternType);
-                ClassName = $"{concern}{operation}{PatternFileNameResolver.Resolve(patternType)}";
-                GroupingStrategy = groupBy;
-            }
 
-            LogUtility.Info($"ProjectName: {ProjectName}");
-            LogUtility.Info($"DomainName: {DomainName}");
-            LogUtility.Info($"DomainAbsolutePath: {DomainAbsolutePath}");
+            Concern = concern;
+            Operation = operation;
+            PatternType = patternType;
+
+            ProjectName = proj.RelativePath;
+            DomainName = proj.ProjectName;
+            DomainAbsolutePath = ResolveDomainAbsolutePath(proj.AbsolutePath);
+            PatternFileType = PatternFileNameResolver.Resolve(patternType);
+            ClassName = $"{concern}{operation}{PatternFileNameResolver.Resolve(patternType)}";
+            GroupingStrategy = groupBy;
+
+            //LogUtility.Info($"ProjectName: {ProjectName}");
+            //LogUtility.Info($"DomainName: {DomainName}");
+            //LogUtility.Info($"DomainAbsolutePath: {DomainAbsolutePath}");
         }
 
         private static string ResolveDomainAbsolutePath(string absolutePath)

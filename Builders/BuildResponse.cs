@@ -1,5 +1,6 @@
 ﻿using CQRSAndMediator.Scaffolding.Enums;
 using CQRSAndMediator.Scaffolding.Infrastructure;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace CQRSAndMediator.Scaffolding.Builders
 {
@@ -8,11 +9,11 @@ namespace CQRSAndMediator.Scaffolding.Builders
         public static void Build(string concern, string operation, GroupByType groupBy)
         {
             ClassAssembler
-                .Configure(concern, operation, PatternDirectoryType.Responses, groupBy)
+                .ConfigureHandler(concern, operation, PatternDirectoryType.Responses, groupBy)
                 .ImportNamespaces()
                 .CreateNamespace()
-                .CreateClass()
-                .Generate()
+                .CreateClass(new[] { SyntaxFactory.Token(SyntaxKind.PublicKeyword) })
+                .GenerateHandler()
                 ;
         }
     }

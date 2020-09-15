@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Generic;
 
 namespace CQRSAndMediator.Scaffolding.Infrastructure
 {
@@ -6,6 +9,17 @@ namespace CQRSAndMediator.Scaffolding.Infrastructure
     {
         IWithInheritance WithInheritance(List<string> inheritanceLis);
         IWithInheritance ImplementMediatorHandlerInheritance(string responseTypeName, string requestTypeName);
-        void Generate();
+        IWithInheritance AddStartupConstructor();
+        IWithInheritance AddGetProperty(string propType, string name, SyntaxKind accessModifier);
+        IWithInheritance AddStartupConfigureServices();
+        IWithInheritance AddStartupConfigure();
+        IWithInheritance AddMethod(SyntaxToken[] modifiers,
+            TypeSyntax returnType,
+            string name,
+            ParameterSyntax[] parameterArray,
+            List<StatementSyntax> bodyStatementArray);
+
+        void GenerateHandler();
+        void Generate(string absolutePath, string className);
     }
 }

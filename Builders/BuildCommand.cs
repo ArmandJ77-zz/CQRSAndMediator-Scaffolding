@@ -2,6 +2,7 @@
 using CQRSAndMediator.Scaffolding.Enums;
 using CQRSAndMediator.Scaffolding.Infrastructure;
 using CQRSAndMediator.Scaffolding.Models;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace CQRSAndMediator.Scaffolding.Builders
 {
@@ -16,19 +17,19 @@ namespace CQRSAndMediator.Scaffolding.Builders
             };
 
             ClassAssembler
-                .Configure(concern, operation, PatternDirectoryType.Commands, groupBy)
+                .ConfigureHandler(concern, operation, PatternDirectoryType.Commands, groupBy)
                 .ImportNamespaces(new List<NamespaceModel>
                 {
                     new NamespaceModel("MediatR"),
                     new NamespaceModel(responseNameSpace,true)
                 })
                 .CreateNamespace()
-                .CreateClass()
+                .CreateClass(new []{SyntaxFactory.Token(SyntaxKind.PublicKeyword)})
                 .WithInheritance(new List<string>
                 {
                     $"IRequest<{concern}{operation}{PatternFileType.Response}>"
                 })
-                .Generate()
+                .GenerateHandler()
                 ;
         }
     }
