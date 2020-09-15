@@ -20,11 +20,26 @@ Create a new solution
 scaffold new sln -n <NAME>
 ```
 
+Creates a new solution along with the class libraries, Nunit projects, setup dependencies 
+and install nuget packages
+
+![New Solution](https://github.com/ArmandJ77/CQRSAndMediator-Scaffolding/blob/master/output.PNG?raw=true)
+
 Create new Mediator handlers
 
 ```
 scaffold new domain -c <CONCERN> -o <OPERATION> -ot <OPERATION TYPE>
 ```
+
+Example of a new Create Orders handler
+
+![New Orders Hanler](https://github.com/ArmandJ77/CQRSAndMediator-Scaffolding/blob/master/output2.PNG?raw=true)
+
+
+### New Solution 
+
+Preview of a newly created solution:
+
 
 
 #### Command Parameters:
@@ -120,6 +135,8 @@ The Patch Command
 ```
 scaffold new domain -c Invoices -o Patch -ot command
 ```
+## 
+
 
 ## Develop locally
 Update the nuget package version located in CQRSAndMediator.Scaffolding.csproj
