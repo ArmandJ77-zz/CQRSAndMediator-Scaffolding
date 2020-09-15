@@ -17,7 +17,7 @@ scaffold -h
 Create a new solution
 
 ```
-scaffold new sln <NAME>
+scaffold new sln -n <NAME>
 ```
 
 Create new Mediator handlers
