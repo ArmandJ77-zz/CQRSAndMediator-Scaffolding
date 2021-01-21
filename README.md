@@ -6,6 +6,20 @@
 
 > [CQRS & Mediator Part 2: Domain scaffolding with Roslyn API and Dotnet CLI](https://medium.com/@armandjordaan6/cqrs-mediator-part-2-domain-scaffolding-with-roslyn-api-and-dotnet-cli-7c99b5b011f) in this part we will be building a dotnet CLI tool which follows the CQRS and Mediator patterns to auto generate commands, queries, responses and handlers in the domain layer using Roslyn API for code generation.
 
+## Installation
+
+Install using dotnet cli:
+
+```
+dotnet tool install --global CQRSAndMediator.Scaffolding
+```
+
+To uninstall use:
+
+```
+dotnet tool uninstall cqrsandmediator.scaffolding --global
+```
+
 ## Breakdown of concepts and commands
 
 Show help information:
@@ -96,20 +110,6 @@ i.e group by operation when parameters are -c Orders -o GetById -ot query -g O
         | OrdersGetByIdResponse.cs
     | Queries
         | OrderGetByIdQuery.cs
-```
-
-## Installation
-
-Install using dotnet cli:
-
-```
-dotnet tool install --global CQRSAndMediator.Scaffolding
-```
-
-To uninstall use:
-
-```
-dotnet tool uninstall cqrsandmediator.scaffolding --global
 ```
 
 ## Usage
