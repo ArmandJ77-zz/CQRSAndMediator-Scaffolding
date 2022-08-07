@@ -6,6 +6,20 @@
 
 > [CQRS & Mediator Part 2: Domain scaffolding with Roslyn API and Dotnet CLI](https://medium.com/@armandjordaan6/cqrs-mediator-part-2-domain-scaffolding-with-roslyn-api-and-dotnet-cli-7c99b5b011f) in this part we will be building a dotnet CLI tool which follows the CQRS and Mediator patterns to auto generate commands, queries, responses and handlers in the domain layer using Roslyn API for code generation.
 
+## Installation
+
+Install using dotnet cli:
+
+```
+dotnet tool install --global CQRSAndMediator.Scaffolding
+```
+
+To uninstall use:
+
+```
+dotnet tool uninstall cqrsandmediator.scaffolding --global
+```
+
 ## Breakdown of concepts and commands
 
 Show help information:
@@ -13,6 +27,34 @@ Show help information:
 ```
 scaffold -h
 ```
+
+Create a new solution
+
+```
+scaffold new sln -n <NAME>
+```
+
+Creates a new solution along with the class libraries, Nunit projects, setup dependencies 
+and install nuget packages
+
+![New Solution](https://github.com/ArmandJ77/CQRSAndMediator-Scaffolding/blob/master/output.PNG?raw=true)
+
+Create new Mediator handlers
+
+```
+scaffold new domain -c <CONCERN> -o <OPERATION> -ot <OPERATION TYPE>
+```
+
+Example of a new Create Orders handler
+
+![New Orders Hanler](https://github.com/ArmandJ77/CQRSAndMediator-Scaffolding/blob/master/output2.PNG?raw=true)
+
+
+### New Solution 
+
+Preview of a newly created solution:
+
+
 
 #### Command Parameters:
 
@@ -70,20 +112,6 @@ i.e group by operation when parameters are -c Orders -o GetById -ot query -g O
         | OrderGetByIdQuery.cs
 ```
 
-## Installation
-
-Install using dotnet cli:
-
-```
-dotnet tool install --global CQRSAndMediator.Scaffolding
-```
-
-To uninstall use:
-
-```
-dotnet tool uninstall cqrsandmediator.scaffolding --global
-```
-
 ## Usage
 
 **Note:** The tool requires that the project is setup already and that the actions are executed in the top level directory of where your domain layer directory is located.
@@ -93,20 +121,22 @@ Use case scaffold out the CRUD domain for an invoice:
 The Create Command
 
 ```
-scaffold -c Invoices -o Create -ot command
+scaffold new domain -c Invoices -o Create -ot command
 ```
 
 The Get By id query
 
 ```
-scaffold -c Invoices -o GetById -ot query
+scaffold new domain -c Invoices -o GetById -ot query
 ```
 
 The Patch Command
 
 ```
-scaffold -c Invoices -o Patch -ot command
+scaffold new domain -c Invoices -o Patch -ot command
 ```
+## 
+
 
 ## Develop locally
 Update the nuget package version located in CQRSAndMediator.Scaffolding.csproj

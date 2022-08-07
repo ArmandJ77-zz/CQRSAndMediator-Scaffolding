@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.CodeAnalysis;
 
 namespace CQRSAndMediator.Scaffolding.Infrastructure
 {
     public interface IWithNamespace
     {
-        IWithNamespace CreateNamespace();
-        IWithInheritance CreateClass();
+        IWithNamespace CreateNamespace(string name = null);
+        IWithInheritance CreateClass(SyntaxToken[] modifiers, string name = null);
     }
 }
